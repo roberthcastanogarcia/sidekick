@@ -48,6 +48,7 @@ class _MainNavigationState extends State<MainNavigation> {
     return Scaffold(
       body: Row(
         children: [
+          // Menú lateral para Linux/Escritorio
           NavigationRail(
             selectedIndex: _selectedIndex,
             onDestinationSelected: (int index) {
@@ -85,8 +86,9 @@ class _MainNavigationState extends State<MainNavigation> {
             ],
           ),
           const VerticalDivider(thickness: 1, width: 1),
-          // El área principal donde cambia la pantalla
-          Expanded(child: _screens[_selectedIndex]),
+          Expanded(
+            child: _screens[_selectedIndex],
+          ),
         ],
       ),
     );
