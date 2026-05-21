@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+
 import 'features/batalla/batalla_screen.dart';
 import 'features/biblioteca/biblioteca_screen.dart';
 import 'features/cuartel/cuartel_screen.dart';
@@ -6,6 +9,15 @@ import 'features/inventario/inventario_screen.dart';
 import 'features/mapa/mapa_screen.dart';
 
 void main() {
+  // Aseguramos que los bindings de Flutter estén inicializados para usar sqflite_ffi
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Si estamos en Linux o Windows, iniciamos el adaptador FFI
+  if (Platform.isWindows || Platform.isLinux) {
+    sqfliteFfiInit();
+    databaseFactory = databaseFactoryFfi;
+  }
+
   runApp(const SidekickApp());
 }
 
