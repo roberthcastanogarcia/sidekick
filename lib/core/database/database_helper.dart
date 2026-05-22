@@ -38,5 +38,40 @@ class DatabaseHelper {
             )
             '''
         );
+        
+        // ¡La Inyección! Insertamos una tarea de prueba en cuanto nace la base de datos
+        await db.insert('tareas', {
+            'titulo': 'Dominar Flutter y SQLite',
+            'etiqueta': '#Sidekick',
+            'completada': 0
+        });
     }
+
+    // Método para obtener la primera tarea que no esté completada
+    Future<Map<String, dynamic>?> obtenerPrimeraTarea() async {
+        Database db = await database;
+        List<Map<String, dynamic>> resultados = await db.query(
+            'tareas',
+            where: 'completada = ?',
+            whereArgs: [0],
+            limit: 1, //solo traemos una, respetando el "Modo foco"
+        );
+
+        if (resultados.isNotEmpty) {
+            return resultados.first;
+        }
+        return null;
+    }
+
+    // Método para marcar la tarea como finalizada
+    Future<int> marcarCompletada(int id) async {
+        Database db = await database;
+        return await db.update(
+            'tareas',
+            {'completada': 1},
+            where: 'id = ?',
+            whereArgs: [id],
+        );
+    }
+
 }
